@@ -4,7 +4,7 @@
 // 2) from the same input, will always emit the same output
 // 3) side-effects (like an API call) are NOT permitted in a pure function
 
-import { ADD_TO_CART, REMOVE_FROM_CART } from '../actions'
+import { ADD_TO_CART, REMOVE_FROM_CART, SET_USERNAME } from '../actions'
 
 // let's think now about our initial state for the redux store!
 const initialState = {
@@ -13,6 +13,9 @@ const initialState = {
     // we'll put here everything belonging to the cart feature
     content: [],
     error: false,
+  },
+  user: {
+    name: '',
   },
 }
 
@@ -41,6 +44,14 @@ const mainReducer = (state = initialState, action) => {
             ...state.cart.content.slice(0, action.payload), // all the elements BEFORE action.payload
             ...state.cart.content.slice(action.payload + 1), // all the elements AFTER action.payload
           ], // hardcore solution but more efficient :)
+        },
+      }
+    case SET_USERNAME:
+      return {
+        ...state,
+        user: {
+          ...state.user,
+          name: action.payload,
         },
       }
     default:

@@ -10,7 +10,9 @@ import { addToCartAction } from '../redux/actions'
 // in any case, for accessing mapDispatchToProps we STILL need to write a mapStateToProps
 // because mapDispatchToProps is the second argument of the connect function!
 
-const mapStateToProps = (state) => ({})
+const mapStateToProps = (state) => ({
+  username: state.user.name,
+})
 
 const mapDispatchToProps = (dispatch) => ({
   // here we're going to write some props capable of interacting with the redux store
@@ -63,15 +65,19 @@ class BookDetail extends Component {
                   <span className="font-weight-bold">Price:</span>
                   {this.state.book.price}
                 </p>
-                <Button
-                  color="primary"
-                  onClick={() => {
-                    // Let's do something in here!
-                    this.props.addToCart(this.state.book)
-                  }}
-                >
-                  ADD TO CART
-                </Button>
+                {this.props.username ? (
+                  <Button
+                    color="primary"
+                    onClick={() => {
+                      // Let's do something in here!
+                      this.props.addToCart(this.state.book)
+                    }}
+                  >
+                    ADD TO CART
+                  </Button>
+                ) : (
+                  <div>Log in to add book to the cart!</div>
+                )}
               </Col>
             </Row>
           </>
