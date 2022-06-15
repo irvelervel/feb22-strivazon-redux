@@ -1,11 +1,24 @@
 import Button from 'react-bootstrap/Button'
 import { FaTrash } from 'react-icons/fa'
 import { Col, Row } from 'react-bootstrap'
-import { useParams } from 'react-router-dom'
+// import { useParams } from 'react-router-dom'
+import { connect } from 'react-redux'
+import { removeFromCartAction } from '../redux/actions'
 
-const Cart = ({ cart = [] }) => {
-  const params = useParams()
-  console.log(params)
+const mapStateToProps = (state) => ({
+  cart: state.cart.content,
+  // cart is the array of books in the cart (state.cart.content)
+})
+
+const mapDispatchToProps = (dispatch) => ({
+  removeFromCart: (indexToRemove) => {
+    dispatch(removeFromCartAction(indexToRemove))
+  },
+})
+
+const Cart = ({ cart, removeFromCart }) => {
+  // const params = useParams()
+  // console.log(params)
 
   return (
     <Row>
@@ -13,7 +26,12 @@ const Cart = ({ cart = [] }) => {
         <ul style={{ listStyle: 'none' }}>
           {cart.map((book, i) => (
             <li key={i} className="my-4">
-              <Button variant="danger" onClick={() => {}}>
+              <Button
+                variant="danger"
+                onClick={() => {
+                  removeFromCart(i)
+                }}
+              >
                 <FaTrash />
               </Button>
               <img
@@ -39,4 +57,4 @@ const Cart = ({ cart = [] }) => {
   )
 }
 
-export default Cart
+export default connect(mapStateToProps, mapDispatchToProps)(Cart)
